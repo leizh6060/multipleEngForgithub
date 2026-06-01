@@ -1,0 +1,27 @@
+ name: Manual Release
+
+ on:
+   workflow_dispatch:
+     inputs:
+       version:
+         description: 'Version to release'
+         required: true
+         default: '2.0.0'
+
+ jobs:
+   release:
+     runs-on: ubuntu-latest
+     permissions:
+       contents: write
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v4
+
+       - name: Create Release
+         uses: ncipollo/release-action@v1
+         with:
+           tag: ${{ github.event.inputs.version }}
+           name: Release ${{ github.event.inputs.version }}
+           body: "Manual release for version ${{ github.event.inputs.version }}"
+           draft: false
+           prerelease: false
