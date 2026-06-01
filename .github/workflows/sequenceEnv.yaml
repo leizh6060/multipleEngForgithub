@@ -1,0 +1,46 @@
+name: Multi-Environment Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Application
+        run: echo "Building artifacts..."
+
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: development  # Links to GitHub Development Environment
+    steps:
+      - name: Deploy to Dev
+        run: |
+          echo "Deploying to Dev Server..."
+          echo "API URL: ${{ vars.API_URL }}"
+          echo "Token: ${{ secrets.DEPLOY_TOKEN }}"
+
+  deploy-staging:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment: staging      # Links to GitHub Staging Environment
+    steps:
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to Staging Server..."
+          echo "API URL: ${{ vars.API_URL }}"
+
+  deploy-prod:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production   # Links to GitHub Production Environment
+    steps:
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to Production Server..."
+          echo "API URL: ${{ vars.API_URL }}"
