@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required to fetch full history so the tagger can calculate the next version
+          fetch-depth: 0 # # Required to fetch full history so the tagger can calculate the next version
 
       - name: Bump Version and Push Tag
         id: tag_version
